@@ -1,22 +1,8 @@
 #!/bin/sh
-#
-# Wildcard-script to monitor network interfaces. To monitor an
-# interface, link vlan_<interface> to this file. E.g.
-#
-#    ln /usr/share/munin/node/plugins-contrib/vlan_ /etc/munin/node.d/vlan_eth0_1
-#
-# ...will monitor eth0.1
-#
-# Parameters:
-#
-# 	config
-# 	autoconf
-# 	suggest
-#
-#%# family=manual
-#%# capabilities=autoconf suggest
 
-# URLBASE=
+# (C) Matthew Slowe, 2014
+# This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License
+# http://creativecommons.org/licenses/by-sa/4.0/
 
 CACHE=/tmp/river_level_.dat
 checkdata () {
