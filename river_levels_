@@ -15,11 +15,8 @@
 # Parameters:
 #
 #   config
-#   autoconf
-#   suggest
 #
 #%# family=manual
-#%# capabilities=autoconf suggest
 
 # Expects a config file to specify which stations to include in the data check and name the catchment
 #
@@ -40,7 +37,7 @@ CACHE=/tmp/river_level_.dat
 checkdata () {
     if test `find "$CACHE" -mtime +1`
     then
-        curl -o $CACHE -Ss $URLBASE || exit 1
+        curl -o $CACHE -Ss $urlbase || exit 1
     fi
 }
 
@@ -82,5 +79,5 @@ fi
 
 for STATION in $stations ; do
     curl -m 5 -sS $urlbase/$STATION |
-        perl -MJSON::PP -e '$id=shift(@ARGV); $d=decode_json(<>) or die; print "river_level_$id.value $d->{data}->{current}->{level}\n";' $STATION
+        perl -MJSON::PP -e '$id=shift(@ARGV); $d=decode_json(<>) or die "error decoding station $id"; print "river_level_$id.value ", $d->{data}->{current}->{level} || "U", "\n";' $STATION
 done
