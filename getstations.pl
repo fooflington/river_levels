@@ -9,6 +9,8 @@ $CatchmentId = shift @ARGV;
 
 print "Decoding...\n" if $DEBUG;
 $in = decode_json(<>) or die;
+
+print "# ln -s /path/to/river_levels_ /etc/munin/plugins/river_levels_$CatchmentId\n\n[river_levels_$CatchmentId]\nenv.urlbase http://path.to/service\nenv.catchmentname Name\nenv.stations " unless $DEBUG;
 foreach $station (@{$in->{data}}) {
 	if ($station->{url} =~ /CatchmentId=$CatchmentId$/) {
 		print "$station->{id}", $DEBUG ? ": $station->{station} on $station->{river}\n" : " ";
