@@ -67,7 +67,7 @@ if [ "$1" = "config" ]; then
         foreach $station (@{$in->{data}}) {
                 if ($station->{url} =~ /CatchmentId=$CatchmentId$/) {
                         $id    = $station->{id};
-                        $river = $station->{river};
+                        $river = $station->{watercourse};
                         $name  = $station->{station};
                         print "river_level_$id.label $name on $river ($id)\n";
                         print "river_level_$id.info Current river level (metres)\n";
