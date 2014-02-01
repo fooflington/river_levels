@@ -5,15 +5,24 @@
 
 use JSON::PP;
 $DEBUG = $ENV{DEBUG};
-$CatchmentId = shift @ARGV;
+my @todo = @ARGV;
+@ARGV = ();
 
-print "Decoding...\n" if $DEBUG;
+$script = $ENV{script} || "/path/to/river_levels_";
+$urlbase = $ENV{urlbase} || "http://path.to/service";
+
+print STDERR "Decoding...\n" if $DEBUG;
 $in = decode_json(<>) or die;
 
-print "# ln -s /path/to/river_levels_ /etc/munin/plugins/river_levels_$CatchmentId\n\n[river_levels_$CatchmentId]\nenv.urlbase http://path.to/service\nenv.catchmentname Name\nenv.stations " unless $DEBUG;
-foreach $station (@{$in->{data}}) {
-	if ($station->{url} =~ /CatchmentId=$CatchmentId$/) {
-		print "$station->{id}", $DEBUG ? ": $station->{station} on $station->{river}\n" : " ";
+foreach $CatchmentId (@todo) {
+	$catchment = "Name";
+	print STDERR "ln -s $script /etc/munin/plugins/river_levels_$CatchmentId\n";
+	print "[river_levels_$CatchmentId]\nenv.urlbase $urlbase\nenv.stations " unless $DEBUG;
+	foreach $station (@{$in->{data}}) {
+		if ($station->{url} =~ /CatchmentId=$CatchmentId$/) {
+			print "$station->{id}", $DEBUG ? ": $station->{station} on $station->{river}\n" : " " unless $station->{watercourse} eq "Tide";
+			$catchment = $station->{watercourse} unless $station->{watercourse} eq "Tide";
+		}
 	}
+	print "\nenv.catchmentname $catchment\n\n" unless $DEBUG;
 }
-print "\n" unless $DEBUG;

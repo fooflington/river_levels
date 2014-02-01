@@ -35,7 +35,7 @@
 
 CACHE=/tmp/river_level_.dat
 checkdata () {
-    if test `find "$CACHE" -mtime +1`
+    if [ ! -f $CACHE ] || test `find "$CACHE" -mtime +1`
     then
         curl -o $CACHE -Ss $urlbase || exit 1
     fi
