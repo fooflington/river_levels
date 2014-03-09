@@ -20,7 +20,7 @@ foreach $CatchmentId (@todo) {
 	print "[river_levels_$CatchmentId]\nenv.urlbase $urlbase\nenv.stations " unless $DEBUG;
 	foreach $station (@{$in->{data}}) {
 		if ($station->{url} =~ /CatchmentId=$CatchmentId$/) {
-			print "$station->{id}", $DEBUG ? ": $station->{station} on $station->{river}\n" : " " unless $station->{watercourse} eq "Tide";
+			print "$station->{id}", $DEBUG ? ": $station->{station} on $station->{watercourse}\n" : " " unless $station->{watercourse} eq "Tide";
 			$catchment = $station->{watercourse} unless $station->{watercourse} eq "Tide";
 		}
 	}
